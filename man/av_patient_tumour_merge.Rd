@@ -15,5 +15,6 @@ av_patient_tumour_merge(df1 = sim_av_patient, df2 = sim_av_tumour)
 a merged dataframe
 }
 \description{
-A simple merge function for gathering the two dataframes ....
+A simple merge function for gathering the two dataframes `sim_av_patient` and `sim_av_tumour`. 
+Dplyr is utilized to keep only one gender column as both datasets contains a gender column.
 }
