@@ -15,11 +15,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Start measuring the time of the analysis
-```{r starting time for logging }
-start <- start_time()
-```
-
 # Load the libraries 
 ```{r setup}
 library(simulacrumWorkflowR)
@@ -28,6 +23,11 @@ library(openxlsx)
 library(broom)
 library(dplyr)
 library(dbplyr)
+```
+
+# Start measuring the time of the analysis
+```{r starting time for logging }
+start <- start_time()
 ```
 
 # Read the dataset

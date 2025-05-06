@@ -3,10 +3,10 @@ library(sqldf)
 
 test_that("query_sql correctly joins patient and tumour data and limits results", {
   
-  tumour_data_dir <- system.file("extdata", "minisimulacrum", "random_tumour_data.csv", package = "simulacrumWorkflowR")
+  tumour_data_dir <- system.file("extdata", "minisimulacrum", "sim_av_tumour.csv", package = "simulacrumWorkflowR")
   random_tumour_data <- read.csv(tumour_data_dir, stringsAsFactors = FALSE) 
   
-  patient_data_dir <- system.file("extdata", "minisimulacrum", "random_patient_data.csv", package = "simulacrumWorkflowR")
+  patient_data_dir <- system.file("extdata", "minisimulacrum", "sim_av_patient.csv", package = "simulacrumWorkflowR")
   random_patient_data <- read.csv(patient_data_dir, stringsAsFactors = FALSE) 
   
   

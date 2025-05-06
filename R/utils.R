@@ -1,7 +1,10 @@
 #' Merge of patient and tumour df
 #' 
 #' @description
-#' A simple merge function for gathering the two dataframes .... 
+#' A simple merge function for gathering the two dataframes `sim_av_patient` and `sim_av_tumour`. 
+#' Dplyr is utilized to keep only one gender column as both datasets contains a gender column.
+#' 
+#' @import dplyr
 #' 
 #' @param df1 a dataframe to be merged with df2. df1 is default set to `sim_av_patient`.
 #' @param df2 a dataframe to be merged with df1. df2 is default set to `sim_av_tumour`.
@@ -11,10 +14,15 @@
 #' 
 #' @export
 
-
 av_patient_tumour_merge <- function(df1 = sim_av_patient, df2 = sim_av_tumour){
   message("Merging `sim_av_patient` and `sim_av_tumour`...")
-  merged_df <- merge(df1, df2, by = "PATIENTID", all = TRUE) 
+  merged_df <- merge(df1, df2, by = "PATIENTID", all = TRUE)
+  
+  merged_df <- merged_df %>%                  
+    dplyr::select(-GENDER.x) %>%         
+    dplyr::rename(GENDER = GENDER.y) %>% 
+    dplyr::arrange(PATIENTID)            
+  
   return(merged_df)
 }
 
@@ -110,4 +118,3 @@ open_simulacrum_request <- function() {
             "'. The page may not exist, there might be a network issue, or the simple check failed.")
   }
 }
-open_simulacrum_request()

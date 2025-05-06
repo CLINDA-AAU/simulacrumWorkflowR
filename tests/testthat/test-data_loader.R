@@ -4,11 +4,19 @@ library(tools)
 options(warn=-1)
 
 
-
 test_read_simulacrum <- function(dir = NULL, package = NULL, selected_files = NULL) {
   required_files <- c(
-    "random_patient_data.csv",
-    "random_tumour_data.csv"
+    "sim_av_gene.csv",
+    "sim_av_patient.csv",
+    "sim_av_tumour.csv",
+    "sim_rtds_combined.csv",
+    "sim_rtds_episode.csv",
+    "sim_rtds_exposure.csv",
+    "sim_rtds_prescription.csv",
+    "sim_sact_cycle.csv",
+    "sim_sact_drug_detail.csv",
+    "sim_sact_outcome.csv",
+    "sim_sact_regimen.csv"
   )
   
   data_dir <- if (!is.null(dir)) {
@@ -18,11 +26,19 @@ test_read_simulacrum <- function(dir = NULL, package = NULL, selected_files = NU
   } else {
     "inst/extdata/minisimulacrum/"
   }
-  
-  
-  if (!is.character(dir)) stop("Please make sure the input dir is a string.")
-  if (!dir.exists(dir)) stop("Directory does not exist. Please check the path.")
-  
+
+  if (!is.null(dir)) {
+    if (!is.character(dir)) {
+      stop("Please make sure the input dir is a string.")
+    }
+    if (!dir.exists(dir)) {
+      stop("Directory does not exist. Please check the path.")
+    }
+  }
+  if (!dir.exists(data_dir)) {
+    stop(sprintf("Determined data directory does not exist: %s", data_dir))
+  }
+
   all_csv_files <- list.files(data_dir, pattern = "\\.csv$", full.names = TRUE)
   available_files <- basename(all_csv_files)
   
@@ -54,19 +70,36 @@ test_read_simulacrum <- function(dir = NULL, package = NULL, selected_files = NU
   
 }
 
+
 test_that("test_read_simulacrum function works correctly", {
-  package_name <- "simulacrumWorkflowR" 
+  package_name <- "simulacrumWorkflowR"
   data_dir_in_package <- system.file("extdata", "minisimulacrum", package = package_name)
   
+  required_files_base <- c(
+    "sim_av_gene",
+    "sim_av_patient",
+    "sim_av_tumour",
+    "sim_rtds_combined",
+    "sim_rtds_episode",
+    "sim_rtds_exposure",
+    "sim_rtds_prescription",
+    "sim_sact_cycle",
+    "sim_sact_drug_detail",
+    "sim_sact_outcome",
+    "sim_sact_regimen"
+  )
   
   expect_no_error(result <- test_read_simulacrum(package = package_name))
   
   expect_is(result, "list")
   
-  expect_true("random_patient_data" %in% names(result))
-  expect_true("random_tumour_data" %in% names(result))
+  expect_true(all(required_files_base %in% names(result)))
   
-  expect_is(result$random_patient_data, "data.frame")
-  expect_is(result$random_tumour_data, "data.frame")
+  expect_equal(length(result), length(required_files_base))
+  
+  for (file_name in required_files_base) {
+    expect_is(result[[file_name]], "data.frame")
+  }
+  
 })
   

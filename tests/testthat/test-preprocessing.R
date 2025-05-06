@@ -80,18 +80,6 @@ test_that("cancer_grouping function correctly assigns diagnosis groups for rando
 
 
 
-random_patient_data <- structure(list(
-  PATIENTID = 1:10,
-  VITALSTATUSDATE = c("2022-12-12", "2022-12-12", "2022-12-12",
-                      "2022-12-12", "2022-12-12", "2022-12-12",
-                      "2022-12-12", "2022-12-12", "2022-12-12",
-                      "2022-12-12"),
-  DEATHCAUSECODE_1A = c("c50", "c50", "c50", "c50", "c50", "c50",
-                        "c50", "c50", "c50", "c50"),
-  VITALSTATUS = c("A", "A", "A", "A", "A", "A", "A", "A", "A", "A"),
-  ETHNICITY = c("D", "D", "D", "D", "D", "D", "D", "D", "D", "D")
-), class = "data.frame", row.names = c(NA, -10))
-
 group_ethnicity <- function(df) {
   if (!is.data.frame(df)) {
     stop("`df` must be a data frame.")
@@ -123,7 +111,7 @@ group_ethnicity <- function(df) {
   return(df)
 }
 
-expected_output <- structure(list(
+expected_output_ethnicity_test <- structure(list( 
   PATIENTID = 1:10,
   VITALSTATUSDATE = c("2022-12-12", "2022-12-12", "2022-12-12",
                       "2022-12-12", "2022-12-12", "2022-12-12",
@@ -137,12 +125,28 @@ expected_output <- structure(list(
                         "Mixed", "Mixed", "Mixed", "Mixed", "Mixed")
 ), class = "data.frame", row.names = c(NA, -10))
 
-test_that("group_ethnicity correctly maps ETHNICITY code 'D' to 'Mixed'", {
-  actual_output <- group_ethnicity(random_patient_data)
-  
-  expect_equal(actual_output, expected_output)
-})
 
+test_that("group_ethnicity correctly maps ETHNICITY code 'D' to 'Mixed'", {
+  test_patient_data_for_ethnicity_test <- structure(list(
+    PATIENTID = 1:10,
+    VITALSTATUSDATE = c("2022-12-12", "2022-12-12", "2022-12-12",
+                        "2022-12-12", "2022-12-12", "2022-12-12",
+                        "2022-12-12", "2022-12-12", "2022-12-12",
+                        "2022-12-12"),
+    DEATHCAUSECODE_1A = c("c50", "c50", "c50", "c50", "c50", "c50",
+                          "c50", "c50", "c50", "c50"),
+    VITALSTATUS = c("A", "A", "A", "A", "A", "A", "A", "A", "A", "A"),
+    ETHNICITY = c("D", "D", "D", "D", "D", "D", "D", "D", "D", "D")
+  ), class = "data.frame", row.names = c(NA, -10))
+  
+  
+  actual_output <- group_ethnicity(test_patient_data_for_ethnicity_test)
+  
+  expect_equal(actual_output, expected_output_ethnicity_test) 
+  
+  expect_error(group_ethnicity("not a data frame"), "`df` must be a data frame.")
+  
+})
 
 df_merged <- av_patient_tumour_merge(random_patient_data, random_tumour_data)
 df_merged
@@ -155,7 +159,6 @@ survival_days <- function(df) {
   required_columns <- c("DIAGNOSISDATEBEST", "VITALSTATUSDATE", "VITALSTATUS")
   if (!all(required_columns %in% colnames(df))) {
     stop(paste(
-      "The input data frame must contain the following columns:",
       paste(required_columns, collapse = ", "),
       message("Please make sure to merge 'sim_av_patient' and 'sim_av_tumour'"),
       message("Use the function 'df_merged <- av_patient_tumour_merge(sim_av_patient,sim_av_tumour)' to merge the dataframes")
