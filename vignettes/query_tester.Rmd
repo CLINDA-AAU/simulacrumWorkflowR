@@ -28,7 +28,8 @@ For this demonstration, we use a guide for sql query published by Health Data In
 # Setup the database: 
 
 ``` {r}
-dir <- "C:/Users/p90j/Documents/simulacrum_v2.1.0/Data"
+dir <- system.file("extdata", "minisimulacrum", package = "simulacrumWorkflowR")
+
 # Automated data loading 
 data_frames_lists <- read_simulacrum(dir) 
 

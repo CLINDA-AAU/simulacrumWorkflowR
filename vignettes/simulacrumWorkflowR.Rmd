@@ -32,7 +32,7 @@ library(dbplyr)
 
 # Read the dataset
 ```{r}
-dir <- system.file("extdata/minisimulacrum", package = "simulacrumWorkflowR")
+dir <- system.file("extdata", "minisimulacrum", package = "simulacrumWorkflowR")
 data_frames_lists <- read_simulacrum(dir, selected_files = c("sim_av_patient", "sim_av_tumour")) 
 ```
 

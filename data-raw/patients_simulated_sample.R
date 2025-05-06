@@ -11,6 +11,7 @@ generated_vitalstatusdate <- rep(as.Date("2022-12-12"), num_rows)
 generated_deathcausecode <- rep("c50", num_rows)
 status_pool <- c("A", "D")
 status_probabilities <- c(0.9, 0.1)
+generated_gender <- sample(c(1, 2), num_rows, replace = TRUE, prob = c(0.5, 0.5))
 generated_vitalstatus <- sample(status_pool, num_rows, replace = TRUE, prob = status_probabilities)
 generated_ethnicity <- rep("D", num_rows)
 
@@ -19,7 +20,8 @@ random_patient_data <- data.frame(
   VITALSTATUSDATE = generated_vitalstatusdate,
   DEATHCAUSECODE_1A = generated_deathcausecode,
   VITALSTATUS = generated_vitalstatus,
-  ETHNICITY = generated_ethnicity
+  ETHNICITY = generated_ethnicity,
+  GENDER = generated_gender
 )
 
 
