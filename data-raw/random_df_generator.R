@@ -1,6 +1,7 @@
 ##
-## 
-##
+## Generation of dataframes with a structure similar to the input dataframe.
+## Generates 10 rows, each consisting of the constant "0".
+## This dummy data serves as a placeholder for the real third-party data, Simulacrum.
 ##
 
 library(simulacrumWorkflowR)
