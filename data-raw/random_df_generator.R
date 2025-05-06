@@ -1,3 +1,8 @@
+##
+## 
+##
+##
+
 library(simulacrumWorkflowR)
 
 dir <- "C:/Users/p90j/Documents/simulacrum_v2.1.0/Data"
@@ -13,7 +18,7 @@ data_frames_to_process <- list(
   sim_sact_cycle = data_frames_lists$sim_sact_cycle,
   sim_sact_drug_detail = data_frames_lists$sim_sact_drug_detail,
   sim_sact_outcome = data_frames_lists$sim_sact_outcome,
-  sim_sact_regimen = data_frames_lists$sim_sact_regimen # Assuming this was the intended 9th dataframe
+  sim_sact_regimen = data_frames_lists$sim_sact_regimen 
 )
 
 zero_dataframe_columns <- function(df) {
