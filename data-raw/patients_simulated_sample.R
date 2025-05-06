@@ -23,7 +23,7 @@ random_patient_data <- data.frame(
 )
 
 
-output_csv_path <- "C:/Users/p90j/Documents/simulacrumWorkflowR/inst/extdata/minisimulacrum/random_patient_data.csv" 
+output_csv_path <- "C:/Users/p90j/Documents/simulacrumWorkflowR/inst/extdata/minisimulacrum/sim_av_patient.csv" 
 
 write.csv(random_patient_data, file = output_csv_path, row.names = FALSE)
 

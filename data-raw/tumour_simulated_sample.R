@@ -44,7 +44,7 @@ random_tumour_data <- data.frame(
 )
 
 
-output_csv_path <- "C:/Users/p90j/Documents/simulacrumWorkflowR/inst/extdata/minisimulacrum/random_tumour_data.csv" 
+output_csv_path <- "C:/Users/p90j/Documents/simulacrumWorkflowR/inst/extdata/minisimulacrum/sim_av_tumour.csv" 
 
 
 write.csv(random_tumour_data, file = output_csv_path, row.names = FALSE)
