@@ -23,7 +23,7 @@ The Simulacrum data is a synthetic version of the real patient data at CAS. It i
 # Installation
 simulacrumWorkflowR may be installed using the following command:
 ```{r, eval = FALSE}
-if (!require("devtools")) install.packages("devtools")
+# install.packages("devtools")
 devtools::install_github("CLINDA-AAU/simulacrumWorkflowR",
 dependencies = TRUE, force = TRUE) 
 
@@ -48,6 +48,8 @@ The process of using this package for getting access to the data at CAS through 
 library(simulacrumWorkflowR)
 open_simulacrum_request()
 ```
+Or at the link: https://simulacrum.healthdatainsight.org.uk/using-the-simulacrum/requesting-data/
+
 2) Copy the directory path of the Simulacrum files on your local machine
 
 3) Use the package's data loader function to load the files into R 
@@ -146,6 +148,6 @@ In the event of an error on NHS servers while executing the analysis pipeline, t
 
 - Frayling L, Jose S. (2023) Simulacrum v2 User Guide. Health Data Insight. Link: Simulacrum-v2-User-Guide.pdf 
 
-- National Disease Registration Service (NDRS). (2022). Guide to using Simulacrum and Submitting code. Link: NDRS   Branded Document 
+- National Disease Registration Service (NDRS). (2023). Guide to using Simulacrum and Submitting code. Link: https://digital.nhs.uk/ndrs/data/data-outputs/cancer-publications-and-tools/simulacrum/simulacrum-user-guide/developing-code-using-simulacrum-for-a-data-release-request 
 
 - Nielsen L, Skelmose J, Brøndum R, Bøgsted M. (2024). Simulacrum-study. Link: CLINDA-AAU/Simulacrum-study 
