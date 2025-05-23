@@ -89,7 +89,7 @@ INNER JOIN SIM_AV_TUMOUR ON SIM_AV_PATIENT.patientid = SIM_AV_TUMOUR.patientid;"
 Execute queries with the sql_test() function:
 
 ```{r}
-df1 <- query_sql(query)
+query_result <- query_sql(query)
 ```
 ## SQLite to Oracle Query Translation
 
@@ -121,19 +121,20 @@ When data management and analysis are complete, use the workflow generator funct
 
 ```{r}
 create_workflow(
-                         libraries = "library(dplyr)",
-                         query = "select * 
-                         from SIM_AV_PATIENT
-                         where age > 50
-                         limit 500;",
+                         libraries = "library(dplyr)
+                                      library(simulacrumWorkflowR)",
+                         query = "SELECT *
+                          FROM sim_av_patient
+                          INNER JOIN sim_av_tumour ON sim_av_patient.patientid = sim_av_tumour.patientid
+                          limit 500;",
                          data_management = "
                          # Run query on SQLite database
-                          cancer_grouping(sim_av_tumour)
+                          data <- cancer_grouping(query_result)
 
                           # Additional preprocessing
-                          #df2 <- survival_days(df1)
+                          modified_data <- survival_days(data)
                           ",
-                         analysis = "model = glm(AGE ~ STAGE_BEST + GRADE,  data=data)",
+                         analysis = "model = glm(AGE ~ STAGE_BEST + GRADE,  data=modified_data)",
                          model_results = "html_table_model(model)")
 ```
 
@@ -150,4 +151,3 @@ In the event of an error on NHS servers while executing the analysis pipeline, t
 
 - National Disease Registration Service (NDRS). (2023). Guide to using Simulacrum and Submitting code. Link: https://digital.nhs.uk/ndrs/data/data-outputs/cancer-publications-and-tools/simulacrum/simulacrum-user-guide/developing-code-using-simulacrum-for-a-data-release-request 
 
-- Nielsen L, Skelmose J, Brøndum R, Bøgsted M. (2024). Simulacrum-study. Link: CLINDA-AAU/Simulacrum-study 

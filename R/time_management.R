@@ -18,6 +18,8 @@
 #' A warning message reminds users that analysis times on local machines and NHS servers are likely different.
 #' However, even with potential time differences, the function provides a guide for time management and a reminder of the limitations of using NHS servers.
 #'
+#' Please use this function for the whole script, part of the scripts and as a measure for the approximate time it takes to run the workflow before sending it to NHS. Keep in mind that the approximation is complex as it depends on the time the NDRS analyst have to spend on the workflow, the hardware of the computer the workflow is designed on and the servers at NHS.  
+#'
 #' @param start_time A `POSIXct` object representing the start time.
 #' @param end_time A `POSIXct` object representing the end time.
 #'
@@ -45,14 +47,14 @@ compute_time_limit <- function(start_time, end_time, time_limit_hours = 3, save_
   
   if (execution_time > time_limit) {
     message_text <- sprintf(
-      "Total Execution Time: %s\nAnalysis rejected! Exceeds the three-hour threshold of NHS.",
+      "Total Execution Time: %s\n. Please be aware that this analysis time have exceeded the three-hour threshold of NHS. This is not even considering the time a NDRS analysis would have to spend on the analysis.",
       as.character(execution_time)
     )
     
     warning(message_text)
   } else {
     message_text <- sprintf(
-      "Total Execution Time: %s\nAnalysis accepted! It is within the three-hour threshold set by the NHS.",
+      "Total Execution Time: %s\n. The time is within the three-hour threshold set by the NHS. But keep in mind that a NDRS analysis also have to go over the script, which is also part of the 3 hours free tier.",
       as.character(execution_time)
     )
     message(message_text)

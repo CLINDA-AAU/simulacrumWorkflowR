@@ -39,6 +39,8 @@ The function provides messages to inform the user whether the 3-hour runtime has
 
 A warning message reminds users that analysis times on local machines and NHS servers are likely different.
 However, even with potential time differences, the function provides a guide for time management and a reminder of the limitations of using NHS servers.
+
+Please use this function for the whole script, part of the scripts and as a measure for the approximate time it takes to run the workflow before sending it to NHS. Keep in mind that the approximation is complex as it depends on the time the NDRS analyst have to spend on the workflow, the hardware of the computer the workflow is designed on and the servers at NHS.
 }
 \examples{
 start <- start_time()

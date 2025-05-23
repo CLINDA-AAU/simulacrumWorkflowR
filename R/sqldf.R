@@ -22,7 +22,12 @@
 query_sql <- function(query) {
   if(!is.character(query))
     stop("The function must contain a string")
-  sqldf(query, stringsAsFactors = FALSE)
+  result_df <- sqldf(query, stringsAsFactors = FALSE)
+  
+  warning("To maintain consistency with create_workflow(), consider assigning the output of query_sql() to a variable named 'query_result'. This aligns with the example workflow and streamlines the workflow.")
+  
+  return(result_df)
+  
 }
 
 

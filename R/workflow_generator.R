@@ -18,10 +18,13 @@
 #'
 #' @return None. The function writes the generated workflow script to the specified file path and outputs a message with the location of the created script.
 #'
-#' @importFrom simulacrumWorkflowR sqlite2oracle 
+#' @importFrom simulacrumWorkflowR sqlite2oracle
 #' @importFrom simulacrumWorkflowR create_dir
-#' @importFrom DBI dbConnect dbWriteTable dbDisconnect dbIsValid
-#' 
+#' @importFrom simulacrumWorkflowR start_time
+#' @importFrom simulacrumWorkflowR stop_time
+#' @importFrom simulacrumWorkflowR compute_time_limit
+#' @importFrom DBI dbConnect dbGetQuery dbDisconnect dbIsValid
+#'
 #' @export
 #'
 #' @examples
@@ -60,6 +63,9 @@ create_workflow <- function(
   model_results <- clean_chunk(model_results)
   
   if (query != "") {
+    query <- gsub("SIM_", "", query)
+    query <- gsub("sim_", "", query)
+    
     query <- sqlite2oracle(query)
   }
   
@@ -103,7 +109,7 @@ my_oracle <- dbConnect(odbc::odbc(),
                        trusted_connection = TRUE)
 # Query ----------------------------------------------------------
 query1 <- \"{QUERY}\"
-data <- dbGetQuery(my_oracle, query1)
+query_result <- dbGetQuery(my_oracle, query1)
 # Data Management ----------------------------------------------------------
 {DATA_MANAGEMENT}
 # Analysis ----------------------------------------------------------

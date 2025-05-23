@@ -22,7 +22,7 @@ preprocessing, query generation, and query testing.
 simulacrumWorkflowR may be installed using the following command:
 
 ``` r
-if (!require("devtools")) install.packages("devtools")
+# install.packages("devtools")
 devtools::install_github("CLINDA-AAU/simulacrumWorkflowR",
 dependencies = TRUE, force = TRUE) 
 ```
@@ -65,6 +65,9 @@ open_simulacrum_request()
 #> URL seems reachable. Opening in browser ...
 #> Complete the form for Simulacrum 2.1.0 and await the data retrieval to the email address used in the form.
 ```
+
+Or at the link:
+<https://simulacrum.healthdatainsight.org.uk/using-the-simulacrum/requesting-data/>
 
 2)  Copy the directory path of the Simulacrum files on your local
     machine
@@ -123,7 +126,7 @@ INNER JOIN SIM_AV_TUMOUR ON SIM_AV_PATIENT.patientid = SIM_AV_TUMOUR.patientid;"
 Execute queries with the sql_test() function:
 
 ``` r
-df1 <- query_sql(query)
+query_result <- query_sql(query)
 ```
 
 ## SQLite to Oracle Query Translation
@@ -161,22 +164,23 @@ NHS:
 
 ``` r
 create_workflow(
-                         libraries = "library(dplyr)",
-                         query = "select * 
-                         from SIM_AV_PATIENT
-                         where age > 50
-                         limit 500;",
+                         libraries = "library(dplyr)
+                                      library(simulacrumWorkflowR)",
+                         query = "SELECT *
+                          FROM sim_av_patient
+                          INNER JOIN sim_av_tumour ON sim_av_patient.patientid = sim_av_tumour.patientid
+                          limit 500;",
                          data_management = "
                          # Run query on SQLite database
-                          cancer_grouping(sim_av_tumour)
+                          data <- cancer_grouping(query_result)
 
                           # Additional preprocessing
-                          #df2 <- survival_days(df1)
+                          modified_data <- survival_days(data)
                           ",
-                         analysis = "model = glm(AGE ~ STAGE_BEST + GRADE,  data=data)",
+                         analysis = "model = glm(AGE ~ STAGE_BEST + GRADE,  data=modified_data)",
                          model_results = "html_table_model(model)")
 #> Created path ./Outputs
-#> Workflow script created at: ./Outputs/workflow_20250503_2142.R
+#> Workflow script created at: ./Outputs/workflow_20250523_1528.R
 #> The workflow script is designed for execution on National Health Service (NHS). Local execution of this script is likely to fail due to its dependency on a database connection. The goal of this package is to generate a workflow file compatible with the NHS server environment, which eliminates the need for local database configuration. Assuming successful execution of all local operations, including library imports, data queries, data management procedures, analyses, and file saving, the generated workflow is expected to function correctly within the NHS server environment.
 ```
 
@@ -196,8 +200,6 @@ generate a comprehensive log to facilitate seamless debugging.
 - Frayling L, Jose S. (2023) Simulacrum v2 User Guide. Health Data
   Insight. Link: Simulacrum-v2-User-Guide.pdf
 
-- National Disease Registration Service (NDRS). (2022). Guide to using
-  Simulacrum and Submitting code. Link: NDRS Branded Document
-
-- Nielsen L, Skelmose J, Brøndum R, Bøgsted M. (2024). Simulacrum-study.
-  Link: CLINDA-AAU/Simulacrum-study
+- National Disease Registration Service (NDRS). (2023). Guide to using
+  Simulacrum and Submitting code. Link:
+  <https://digital.nhs.uk/ndrs/data/data-outputs/cancer-publications-and-tools/simulacrum/simulacrum-user-guide/developing-code-using-simulacrum-for-a-data-release-request>

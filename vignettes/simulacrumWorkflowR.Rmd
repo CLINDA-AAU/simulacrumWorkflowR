@@ -35,7 +35,11 @@ start <- start_time()
 dir <- system.file("extdata", "minisimulacrum", package = "simulacrumWorkflowR")
 data_frames_lists <- read_simulacrum(dir, selected_files = c("sim_av_patient", "sim_av_tumour")) 
 ```
+A warning is issued after dataframes are loaded, suggesting that dataframe variables should be named consistently with the original database table names. While not strictly necessary for the package’s core functionalities, significant gains are offered by this approach.
 
+Original naming of these dataframes are to simplify the process for NDRS analysts. This alignment of dataframe names with static database table names allows queries within the workflow to be more easily understood. Confusion and additional work in the limited time of the free tier can be caused by diverging from these original names.
+
+Also, a merging function `av_patient_tumour_merge()` depends on the dataframes being named after the original table names. 
 
 # dfs
 ```{r}
@@ -64,11 +68,11 @@ query_plan_limit <- patient_db %>%
 show_query(query_plan_limit)
 DBI::dbDisconnect(con)
 ```
-# To figure our what queries to include for the workflow are dbplyr a great resource to write R code directly to the sqlite database. After the data mangement code have been written, it can be transformed into a sql query with the `show_query()`. The query can be tested in the query_sql function, or be directly incerted into the `create_workflow()`
+To figure our what queries to include for the workflow are dbplyr a great resource to write R code directly to the sqlite database. After the data mangement code have been written, it can be transformed into a sql query with the `show_query()`. The query can be tested in the query_sql function, or be directly incerted into the `create_workflow()`
 
 # Run query on SQLite database
 ```{r}
-df1 <- query_sql("SELECT 
+query_result <- query_sql("SELECT 
 SIM_AV_PATIENT.PATIENTID, SIM_AV_PATIENT.GENDER, SIM_AV_PATIENT.VITALSTATUS, SIM_AV_PATIENT.VITALSTATUSDATE, SIM_AV_TUMOUR.DIAGNOSISDATEBEST, SIM_AV_TUMOUR.AGE, SIM_AV_TUMOUR.PERFORMANCESTATUS, SIM_AV_TUMOUR.SITE_ICD10_O2_3CHAR
 
 FROM SIM_AV_PATIENT
@@ -111,7 +115,7 @@ DBI::dbDisconnect(con)
 
 # Additional preprocessing
 ```{r}
-df_surv <- survival_days(df1)
+df_surv <- survival_days(query_result)
 df_surv$VITALSTATUS <- ifelse(df_surv$VITALSTATUS == "A", 1,
                               ifelse(df_surv$VITALSTATUS == "D", 0, NA))
 
@@ -150,6 +154,8 @@ stop <- stop_time()
 compute_time_limit(start, stop)
 ```
 
+As mentioned in the manual of the `compute_time_limit` should the user of this package use this function as a support tool to decide the complexity of the workflow which are intended to be executed on the real CAS data. The users of this package should account for the run time, the complexity and potential adjustment a NDRS analyst would have to account for, and for the difference in compute power of the users machine compared to the machines at NHS. 
+
 # create a full workflow with the analysis code
 ```{r}
 create_workflow(
@@ -160,20 +166,23 @@ library(sjmisc)
 library(sjlabelled)
 ',
   query = "                  
-SELECT *
-FROM sim_av_patient
-INNER JOIN sim_av_tumour ON sim_av_patient.patientid = sim_av_tumour.patientid;",
+SELECT 
+SIM_AV_PATIENT.PATIENTID, SIM_AV_PATIENT.GENDER, SIM_AV_PATIENT.VITALSTATUS, SIM_AV_PATIENT.VITALSTATUSDATE, SIM_AV_TUMOUR.DIAGNOSISDATEBEST, SIM_AV_TUMOUR.AGE, SIM_AV_TUMOUR.PERFORMANCESTATUS, SIM_AV_TUMOUR.SITE_ICD10_O2_3CHAR
+
+FROM SIM_AV_PATIENT
+INNER JOIN SIM_AV_TUMOUR 
+    ON SIM_AV_PATIENT.patientid = SIM_AV_TUMOUR.patientid;",
   data_management = '        
-df2 <- survival_days(df1)
+data <- survival_days(query_result)
 
-df21 <- df2
+data_copy <- data
 
-df21$VITALSTATUS <- ifelse(df21$VITALSTATUS == "A", 1,
-                              ifelse(df21$VITALSTATUS == "D", 0, NA))
+data_copy$VITALSTATUS <- ifelse(data_copy$VITALSTATUS == "A", 1,
+                              ifelse(data_copy$VITALSTATUS == "D", 0, NA))
 ',
   analysis = '
-cox_model <- coxph(Surv(diff_date, VITALSTATUS) ~ AGE + factor(GENDER.x) + factor(PERFORMANCESTATUS), data=df21)
-log_model <- glm(VITALSTATUS ~ AGE + factor(GENDER.x) + factor(PERFORMANCESTATUS), data=df21, family = "binomial")
+cox_model <- coxph(Surv(diff_date, VITALSTATUS) ~ AGE + factor(GENDER) + factor(PERFORMANCESTATUS), data=data_copy)
+log_model <- glm(VITALSTATUS ~ AGE + factor(GENDER) + factor(PERFORMANCESTATUS), data=data_copy, family = "binomial")
 ',
   model_results = '
 cox_model_sum <- tidy(cox_model)
@@ -186,8 +195,4 @@ write.xlsx(log_model_sum, "log_model.xlsx")
 
 ```
 
-
-```{r}
-stop <- stop_time()
-compute_time_limit(start, stop)
-```
+The `create_workflow` function demonstrates the structure of a workflow file. Code components are inserted as strings, and logical order is maintained. A complete workflow's appearance is illustrated without a database setup. If code is inserted in the logical sequence guided by the function, the resulting workflow will be executable on the CAS database.
