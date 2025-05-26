@@ -80,6 +80,7 @@ INNER JOIN SIM_AV_TUMOUR
     ON SIM_AV_PATIENT.patientid = SIM_AV_TUMOUR.patientid;
 ")
 ```
+The warning message regarding `query_result`, appears because it is the default variable name for database extraction in `create_workflow`. This message should encourage users to create variable names consistent with the workflow, which would minimize time spend for NDRS analysts on adjusting the workflow for the CAS database.
 
 # Another case of dbplyr for data management to produce the necessary queries for the workflow
 ```{r}
