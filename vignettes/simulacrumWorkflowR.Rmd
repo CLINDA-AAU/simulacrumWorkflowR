@@ -108,8 +108,6 @@ query_plan_join_select <- joined_data %>%
 
 show_query(query_plan_join_select)
 
-show_query(query_plan_join_select)
-
 DBI::dbDisconnect(con)
 ```
 
