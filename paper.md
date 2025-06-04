@@ -126,18 +126,20 @@ The `sqlite2oracle` function ensures basic query translation for Oracle database
 
 
 # Limitations 
-The Simulacrum Version: The newest version of the simulacrum is required for implementing the workflow on the CAS database because it resembles the CAS database more closely than earlier versions. Thus, the functionalities of these packages are built for Simulacrum v2.1.0, which means that some functions will not support earlier versions of the Simulacrum..  
+The Simulacrum Version: The newest version of the Simulacrum is strongly advised for implementing the workflow on the CAS database due to it resembles the CAS database more than earlier versions of Simulacrum. Thus, the functionalities of this package are built for Simulacrum v2.1.0, meaning some functions will not support earlier versions of Simulacrum. 
 
 Data Differences:
 
 - Coverage: The Simulacrum reflects diagnoses from 2016–2019, while CAS includes records dating back to 1971. The 2016-2019 restriction needs to be added to the code for running on CAS, as this time period is only provided in the free tier. Periods of the CAS data extending beyond The Simulacrum v2.1.0 will required a formal data release request and a cost estimate provided by DARS given the scope of data needed.
 - Structure: The Simulacrum has a simplified structure for ease of use, but this differs from the evolving CAS database. Adjustment by NDRS is likely before execution on CAS.
 
+The simulacrum, being a snapshot of a limited period and a simplified structure, inherently has structural and coverage limitations. This is because it is derived from an rather dynamic and complex original dataset. Despite these limitations, the simulacrum offers a well-balanced comprehensive yet user-friendly test dataset.
+
+
 SQLite: While both Oracle and SQLite use SQL syntax, there are notable differences between their syntaxes. For example, SQLite uses ‘LIMIT’ while Oracle uses ‘ROWNUM’.  The sqldf package's implementation also restricts table creation capabilities within SQLite. Adjustment by NDRS is likely before execution on CAS. 
 
 Time Management: While the Simulacrum facilitates SQL query testing, time estimates for queries may not align with CAS performance due to its larger dataset. Similarly, code adjustments will take time that is unaccounted for in this. Despite this limitation, the package remains useful for benchmarking other components of the R script and identifying performance bottlenecks. 
 
-A important note is that the mentioned limitations are inherent to the Simulacrum data itself, rather than being due to the functionality of this package.
 
 # Acknowledgements
 Jakob Skelmose and Jennifer Bartell acknowledge funding by the Novo Nordisk Fonden (NNF20OC0063268) via the Health Data Science Sandbox (https://hds-sandbox.github.io). Martin Bøgsted and Rasmus Rask Kragh Jørgensen acknowledge funding by the Novo Nordisk Fonden (NNF23OC0083510) via the SE3D project (Synthetic health data: ethical deployment and dissemination via deep learning approaches). We greatly appreciate the feedback we received from Lora Frayling at Health Data Insight.
