@@ -101,21 +101,22 @@ SIM_AV_TUMOUR <- data_frames_lists$sim_av_tumour
 
 ### Querying data:
 ```R
-query <- "SELECT *
+query_result <- "SELECT *
 FROM SIM_AV_PATIENT
 INNER JOIN SIM_AV_TUMOUR 
 ON SIM_AV_PATIENT.patientid = SIM_AV_TUMOUR.patientid;"
 
 # Execute queries with the sql_test() function:
-df1 <- query_sql(query)
+df1 <- query_sql(query_result)
 ```
 
 ### Generating a reproducible workflow for submission to NHS 
 ```R
 create_workflow( 
-libraries = "library(dplyr)", 
+libraries = "library(dplyr)
+             library(simulacrumWorkflowR)", 
 query = "select * from sim_av_tumour where age > 50 limit 500;", 
-data_management = "cancer_grouping(sim_av_tumour)",
+data_management = "data <- cancer_grouping(query_result)",
 analysis = "model = glm(AGE ~ STAGE_BEST + GRADE, data=data)", 
 model_results = "html_table_model(model)"
 )

@@ -163,6 +163,7 @@ library(survival)
 library(sjPlot)
 library(sjmisc)
 library(sjlabelled)
+library(simulacrumWorkflowR)
 ',
   query = "                  
 SELECT 
