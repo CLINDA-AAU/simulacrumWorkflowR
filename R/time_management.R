@@ -23,7 +23,8 @@
 #' @param start_time A `POSIXct` object representing the start time.
 #' @param end_time A `POSIXct` object representing the end time.
 #'
-#' @importFrom lubridate as.duration 
+#' @importFrom lubridate ymd_hms
+#' @importFrom lubridate as.duration
 #' @importFrom lubridate duration
 #' @importFrom simulacrumWorkflowR create_dir
 #'

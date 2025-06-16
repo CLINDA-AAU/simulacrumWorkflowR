@@ -1,6 +1,4 @@
 library(testthat)
-library(simulacrumWorkflowR)
-library(dplyr)
 
 tumour_data_dir <- system.file("extdata", "minisimulacrum", "sim_av_tumour.csv", package = "simulacrumWorkflowR")
 random_tumour_data <- read.csv(tumour_data_dir, stringsAsFactors = FALSE) 
@@ -8,27 +6,6 @@ random_tumour_data <- read.csv(tumour_data_dir, stringsAsFactors = FALSE)
 patient_data_dir <- system.file("extdata", "minisimulacrum", "sim_av_patient.csv", package = "simulacrumWorkflowR")
 random_patient_data <- read.csv(patient_data_dir, stringsAsFactors = FALSE) 
 
-
-
-create_dir <- function(dir_name = "./Outputs", verbose = TRUE) {
-  if (!is.character(dir_name)) {
-    stop("`dir_name` needs to be a string")
-  }
-  if (!is.logical(verbose)) {
-    stop("`verbose` needs to be a logical value")
-  }
-  
-  if (!dir.exists(dir_name)) {
-    dir.create(dir_name, recursive = TRUE)
-    if (verbose) {
-      message(paste0("Created path ", dir_name))
-    }
-  } else if (verbose) {
-    message(paste0("Path ", dir_name, " already exists"))
-  }
-  
-  invisible(dir_name)
-}
 
 test_that("create_dir creates a new directory and shows message by default", {
   test_dir <- fs::path(tempdir(), "test_create_dir_new")
@@ -49,17 +26,6 @@ test_that("create_dir creates a new directory and shows message by default", {
 })
 
 
-av_patient_tumour_merge <- function(df1 = sim_av_patient, df2 = sim_av_tumour){
-  message("Merging `sim_av_patient` and `sim_av_tumour`...")
-  merged_df <- merge(df1, df2, by = "PATIENTID", all = TRUE)
-
-  merged_df <- merged_df %>%                  
-    dplyr::select(-GENDER.x) %>%         
-    dplyr::rename(GENDER = GENDER.y) %>% 
-    dplyr::arrange(PATIENTID)            
-  
-  return(merged_df)
-}
 
 av_patient_tumour_merge(random_patient_data, random_tumour_data)
 

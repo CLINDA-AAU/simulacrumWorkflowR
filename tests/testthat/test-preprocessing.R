@@ -1,7 +1,4 @@
 library(testthat)
-library(simulacrumWorkflowR)
-library(dplyr)
-
 
 tumour_data_dir <- system.file("extdata", "minisimulacrum", "sim_av_tumour.csv", package = "simulacrumWorkflowR")
 random_tumour_data <- read.csv(tumour_data_dir, stringsAsFactors = FALSE) 
@@ -11,35 +8,6 @@ random_patient_data <- read.csv(patient_data_dir, stringsAsFactors = FALSE)
 
 
 
-
-cancer_grouping <- function(df) {
-  if (!is.data.frame(df)) {
-    stop("`df` must be a data frame.")
-  }
-  
-  df <- dplyr::mutate(df,
-                      ip = as.numeric(substr(SITE_ICD10_O2_3CHAR, 2, 3)),
-                      diag_group = dplyr::case_when(
-                        ip %in% c(47, 69:72) ~ "Eye, brain and CNS",
-                        ip %in% c(50) ~ "Breast",
-                        ip %in% c(51:58) ~ "Gynaecological",
-                        ip %in% c(0:14, 30:32) ~ "Head and Neck",
-                        ip %in% c(18:21) ~ "Lower gastrointestinal",
-                        ip %in% c(33:34, 37:39, 45) ~ "Lung and bronchus",
-                        ip %in% c(15:17, 22:25) ~ "Upper gastrointestinal",
-                        ip %in% c(60:68) ~ "Urology",
-                        ip %in% c(43:44) ~ "Skin",
-                        ip %in% c(81:86, 90:96) ~ "Haematologic",
-                        TRUE ~ "Ill-defined and unspecified"
-                      ),
-                      diag_group = ifelse(substr(SITE_ICD10_O2_3CHAR, 1, 1) == "C",
-                                          diag_group,
-                                          "Other")
-  )
-  df <- dplyr::select(df, -ip)
-  
-  return(df)
-}
 
 expected_output_data <- data.frame(
   PATIENTID = 1:10,
@@ -79,37 +47,6 @@ test_that("cancer_grouping function correctly assigns diagnosis groups for rando
 })
 
 
-
-group_ethnicity <- function(df) {
-  if (!is.data.frame(df)) {
-    stop("`df` must be a data frame.")
-  }
-  if (!"ETHNICITY" %in% names(df)) {
-    stop("`df` must contain a column named 'ETHNICITY'.")
-  }
-  
-  ethnicity_mapping <- list(
-    White = c("A", "B", "C", "C2", "C3", "CA", "CB", "CC", "CD", "CE", "CF",
-              "CG", "CH", "CJ", "CK", "CL", "CM", "CN", "CP", "CQ", "CR",
-              "CS", "CT", "CU", "CV", "CW", "CX", "CY"),
-    Mixed = c("D", "E", "F", "G", "GA", "GB", "GC", "GD", "GE", "GF"),
-    Asian = c("H", "J", "K", "L", "LA", "LB", "LC", "LD", "LE", "LF", "LG",
-              "LH", "LJ", "LK", "R"),
-    Black = c("M", "N", "P", "PA", "PB", "PC", "PD", "PE"),
-    Other = c("S", "SA", "SB", "SC", "SD", "SE")
-  )
-  
-  code_to_group_map <- setNames(
-    rep(names(ethnicity_mapping), lengths(ethnicity_mapping)),
-    unlist(ethnicity_mapping)
-  )
-  
-  df$ETHNICITY <- as.character(df$ETHNICITY)
-  
-  df$Grouped_Ethnicity <- code_to_group_map[df$ETHNICITY]
-  
-  return(df)
-}
 
 expected_output_ethnicity_test <- structure(list( 
   PATIENTID = 1:10,
@@ -151,27 +88,6 @@ test_that("group_ethnicity correctly maps ETHNICITY code 'D' to 'Mixed'", {
 df_merged <- av_patient_tumour_merge(random_patient_data, random_tumour_data)
 df_merged
 
-survival_days <- function(df) {              
-  if (!is.data.frame(df)) {
-    stop("`df` must be a data frame.")
-  }
-  
-  required_columns <- c("DIAGNOSISDATEBEST", "VITALSTATUSDATE", "VITALSTATUS")
-  if (!all(required_columns %in% colnames(df))) {
-    stop(paste(
-      paste(required_columns, collapse = ", "),
-      message("Please make sure to merge 'sim_av_patient' and 'sim_av_tumour'"),
-      message("Use the function 'df_merged <- av_patient_tumour_merge(sim_av_patient,sim_av_tumour)' to merge the dataframes")
-    ))
-  }
-  
-  df$diff_date <- as.numeric(as.Date(df$VITALSTATUSDATE) - as.Date(df$DIAGNOSISDATEBEST))
-  df$time_to_death <- ifelse(df$VITALSTATUS == "D", df$diff_date, NA_real_)
-  df$status_OS <- ifelse(df$VITALSTATUS == "D", yes=1, no=0)
-  df$Time_OS <- df$diff_date
-  
-  return(df)
-}
 
 survival_days(df_merged)
 
