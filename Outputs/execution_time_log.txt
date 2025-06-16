@@ -1,2 +1,0 @@
-Total Execution Time: 3600s (~1 hours)
-. The time is within the three-hour threshold set by the NHS. But keep in mind that a NDRS analysis also have to go over the script, which is also part of the 3 hours free tier.
