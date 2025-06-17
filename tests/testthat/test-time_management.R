@@ -4,29 +4,21 @@ test_that("compute_time_limit correctly identifies time within limit and produce
   test_start_time <- as.POSIXct("2025-01-01 10:00:00", tz = "UTC")
   test_end_time <- as.POSIXct("2025-01-01 11:00:00", tz = "UTC")
   test_limit_hours <- 3
-  
+
   expect_message(
-    {
-      result <- compute_time_limit(test_start_time, test_end_time, time_limit_hours = test_limit_hours)
-    },
-    regexp = "Total Execution Time:.*The time is within the three-hour threshold set by the NHS.",
-    fixed = FALSE
-  )
-  
+  {
+    result <- compute_time_limit(test_start_time, test_end_time, time_limit_hours = test_limit_hours)
+  },
+      regexp = "Total Execution Time:.*The time is within the three-hour threshold set by the NHS.",
+      fixed = FALSE
+  ) |>
   expect_warning(
-    {
-      compute_time_limit(test_start_time, test_end_time, time_limit_hours = test_limit_hours)
-    },
-    regexp = "Please note that the processing power of NHS servers and your local machine may vary significantly.",
-    fixed = FALSE
-  )
-  
+      regexp = "Please note that the processing power of NHS servers and your local machine may vary significantly.",
+      fixed = FALSE
+  ) |>
   expect_warning(
-    {
-      compute_time_limit(test_start_time, test_end_time, time_limit_hours = test_limit_hours)
-    },
-    regexp = "Please also take into account the time required for the NDRS analyst",
-    fixed = FALSE
+      regexp = "Please also take into account the time required for the NDRS analyst",
+      fixed = FALSE
   )
   
   expect_true("execution_time" %in% names(result))
