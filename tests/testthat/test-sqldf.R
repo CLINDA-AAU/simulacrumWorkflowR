@@ -34,7 +34,8 @@ test_that("query_sql correctly joins patient and tumour data and limits results"
       stringsAsFactors = FALSE
     )
     
-    actual_df <- query_sql(query)
+    expect_warning(actual_df <- query_sql(query),
+                   regexp = "To maintain consistency with create_workflow")
     
     expect_equal(actual_df, expected_df)
   },
