@@ -21,9 +21,13 @@ test_that("test_read_simulacrum function works correctly", {
     "sim_sact_regimen"
   )
   
-  expect_no_error(result <- read_simulacrum(dir = data_dir))
+  expect_no_error({result <- read_simulacrum(dir = data_dir)}) |>
+    expect_warning(
+        regexp = "Please refer to tables by their original names, capitalized as presented"
+  )
+
   
-  expect_type(result, "list") 
+  expect_type(result, "list")
   
   expect_true(all(required_files_base %in% names(result)))
   
@@ -36,7 +40,7 @@ test_that("test_read_simulacrum function works correctly", {
   expect_error(read_simulacrum(dir = "path/that/does/not/exist"), "Directory does not exist.")
   
   selected_files_test <- c("sim_av_gene", "sim_av_patient")
-  result_selected <- read_simulacrum(dir = data_dir, selected_files = selected_files_test)
+  result_selected <- suppressWarnings(read_simulacrum(dir = data_dir, selected_files = selected_files_test))
   expect_equal(names(result_selected), selected_files_test)
   expect_equal(length(result_selected), 2)
 })
