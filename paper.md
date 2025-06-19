@@ -128,14 +128,14 @@ The `sqlite2oracle` function ensures basic query translation for Oracle database
 
 
 # Limitations 
-The Simulacrum Version: The newest version of the Simulacrum is required for implementing the workflow on the CAS database because it resembles the CAS database more closely than earlier versions. Thus, the functionalities of this package are built for Simulacrum v2.1.0, which means that some functions will not support earlier versions of the Simulacrum.
+The Simulacrum Version: The newest version of the Simulacrum is required for implementing the workflow on the CAS database because it resembles the CAS database more closely than earlier versions. Thus, the functionalities of this package are built for the Simulacrum v2.1.0, which means that some functions will not support earlier versions of the Simulacrum.
 
 Data Differences:
 
 - Coverage: The Simulacrum reflects diagnoses from 2016–2019, while CAS includes records dating back to 1971. The 2016-2019 restriction needs to be added to the code for running on CAS, as this time period is only provided in the free tier. Periods of the CAS data extending beyond The Simulacrum v2.1.0 will required a formal data release request and a cost estimate provided by DARS given the scope of data needed.
 - Structure: The Simulacrum has a simplified structure for ease of use, but this differs from the evolving CAS database. Adjustment by NDRS is likely before execution on CAS.
 
-The simulacrum, being a snapshot of a limited period and a simplified structure, inherently has structural and coverage limitations. This is because it is derived from a rather dynamic and complex original dataset. Despite these limitations, the simulacrum offers a well-balanced comprehensive yet user-friendly test dataset.
+The simulacrum, being a snapshot of a limited period and a simplified structure, inherently has structural and coverage limitations. This is because it is derived from a rather dynamic and complex original dataset. Despite these limitations, the Simulacrum offers a well-balanced comprehensive yet user-friendly test dataset.
 
 
 SQLite: While both Oracle and SQLite use SQL syntax, there are notable differences between their syntaxes. For example, SQLite uses ‘LIMIT’ while Oracle uses ‘ROWNUM’.  The sqldf package's implementation also restricts table creation capabilities within SQLite. Adjustment by NDRS is likely before execution on CAS. 
