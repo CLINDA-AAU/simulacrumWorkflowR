@@ -75,7 +75,6 @@ simulacrumWorkflowR was developed with R version 4.3.3 (@Rsoftware2024stat). Ins
 
 ### Installation:
 ```R
-if (!require("devtools")) install.packages("devtools")
 devtools::install_github("CLINDA-AAU/simulacrumWorkflowR",
 dependencies = TRUE, force = TRUE) 
 ```
@@ -89,9 +88,10 @@ open_simulacrum_request()
 ```R
 library(simulacrumWorkflowR)
 
-dir <- "C:/Users/p90j/Documents/simulacrum_v2.1.0/Data"
+dir <- "/path/to/simulacrum/csv/files"
 # Automated data loading 
-data_frames_lists <- read_simulacrum(dir, selected_files = c("sim_av_patient", "sim_av_tumour")) 
+data_frames_lists <- read_simulacrum(dir, 
+selected_files = c("sim_av_patient", "sim_av_tumour")) 
 ```
 
 ### Access dataframes individually

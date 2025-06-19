@@ -1,0 +1,2 @@
+Total Execution Time: 14400s (~4 hours)
+. Please be aware that this analysis time have exceeded the three-hour threshold of NHS. This is not even considering the time a NDRS analysis would have to spend on the analysis.
