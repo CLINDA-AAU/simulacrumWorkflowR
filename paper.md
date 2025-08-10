@@ -63,69 +63,12 @@ Figure 1: Flowchart of the process of running an analysis on the CAS Database us
 The simulacrumWorkflowR package is, to our knowledge, the first package designed to enhance usability and provide a complete workflow for utilizing the Simulacrum datasets to facilitate access and execution of code for analysis on the CAS database.
 
 # Key functionalities 
-Providing a streamlined setup for building the workflow in R. The package includes:
+The package provides a streamlined setup for building the workflow in R. The package includes:
 
 1.	\textbf{Integrated SQL Environment:} Leverages the SQLdf [@grothendieck2017sqldf] package to enable SQL queries directly within R, eliminating the need to set up an external database and ODBC connections by creating a local temporary SQLite database [@sqlite2025main] within the R environment. 
 2.	\textbf{Query Helper:} Offers a collection of queries custom-made for the Simulacrum dataset  for pulling and merging specific tables. Additionally, the `sqlite2oracle` function assists in translating queries to be compatible with the CAS database servers.
 3.	\textbf{Helper Tools:} Offers a range of data preprocessing functions for cleaning and preparing the data for analysis, ensuring data quality, and consistency. Key functions include cancer type grouping, survival outcomes, and logging reports. 
 4.	\textbf{Workflow Generator:} Generates an R script with the complete workflow. This ensures correct layout and the ability to integrate the necessary code to obtain a workflow suitable for submission to NDRS and execution on the CAS database. 
-
-# Workflow illustration
-simulacrumWorkflowR was developed with R version 4.3.3 [@Rsoftware2024stat]. Installation requires Devtools and relies on dependencies listed in the DESCRIPTION file in the GitHub repository. These dependencies are automatically installed during package installation.
-
-### Installation:
-```R
-devtools::install_github("CLINDA-AAU/simulacrumWorkflowR",
-dependencies = TRUE, force = TRUE) 
-```
-
-### Request to Download data: 
-```R
-open_simulacrum_request()
-```
-
-### Loading data:
-```R
-library(simulacrumWorkflowR)
-
-dir <- "/path/to/simulacrum/csv/files"
-# Automated data loading 
-data_frames_lists <- read_simulacrum(dir, 
-selected_files = c("sim_av_patient", "sim_av_tumour")) 
-```
-
-### Access dataframes individually
-```R
-SIM_AV_PATIENT <- data_frames_lists$sim_av_patient
-SIM_AV_TUMOUR <- data_frames_lists$sim_av_tumour
-```
-
-### Querying data:
-```R
-query_result <- "SELECT *
-FROM SIM_AV_PATIENT
-INNER JOIN SIM_AV_TUMOUR 
-ON SIM_AV_PATIENT.patientid = SIM_AV_TUMOUR.patientid;"
-
-# Execute queries with the sql_test() function:
-df1 <- query_sql(query_result)
-```
-
-### Generating a reproducible workflow for submission to NHS 
-```R
-create_workflow( 
-libraries = "library(dplyr)
-             library(simulacrumWorkflowR)", 
-query = "select * from sim_av_tumour where age > 50 limit 500;", 
-data_management = "data <- cancer_grouping(query_result)",
-analysis = "model = glm(AGE ~ STAGE_BEST + GRADE, data=data)", 
-model_results = "html_table_model(model)"
-)
-```
-
-### Oracle compatibility: 
-The `sqlite2oracle` function ensures basic query translation for Oracle databases.
-
 
 # Limitations 
 The Simulacrum Version: The newest version of the Simulacrum is required for implementing the workflow on the CAS database because it resembles the CAS database more closely than earlier versions. Thus, the functionalities of this package are built for the Simulacrum v2.1.0, which means that some functions will not support earlier versions of the Simulacrum.
@@ -135,12 +78,12 @@ Data Differences:
 - Coverage: The Simulacrum reflects diagnoses from 2016–2019, while CAS includes records dating back to 1971. The 2016-2019 restriction needs to be added to the code for running on CAS, as this time period is only provided in the free tier. Periods of the CAS data extending beyond The Simulacrum v2.1.0 will required a formal data release request and a cost estimate provided by DARS given the scope of data needed.
 - Structure: The Simulacrum has a simplified structure for ease of use, but this differs from the evolving CAS database. Adjustment by NDRS is likely before execution on CAS.
 
-The simulacrum, being a snapshot of a limited period and a simplified structure, inherently has structural and coverage limitations. This is because it is derived from a rather dynamic and complex original dataset. Despite these limitations, the Simulacrum offers a well-balanced comprehensive yet user-friendly test dataset.
+The Simulacrum, being a snapshot of a limited period and a simplified structure, inherently has structural and coverage limitations. This is because it is derived from a rather dynamic and complex original dataset. Despite these limitations, the Simulacrum offers a well-balanced, comprehensive, yet user-friendly test dataset.
 
 
 SQLite: While both Oracle and SQLite use SQL syntax, there are notable differences between their syntaxes. For example, SQLite uses ‘LIMIT’ while Oracle uses ‘ROWNUM’.  The sqldf package's implementation also restricts table creation capabilities within SQLite. Adjustment by NDRS is likely before execution on CAS. 
 
-Time Management: While the Simulacrum facilitates SQL query testing, time Similarly, code adjustments will take time that is unaccounted for in the estimates provided by SimulacrumWorkflowR. Despite this limitation, the package remains useful for benchmarking other components of the R script and identifying performance bottlenecks. 
+Time Management: While the Simulacrum facilitates SQL query testing, code adjustments will still take time that is unaccounted for in the estimates provided by simulacrumWorkflowR. Despite this limitation, the package remains useful for benchmarking other components of the R script and identifying performance bottlenecks.
 
 
 # Acknowledgements
