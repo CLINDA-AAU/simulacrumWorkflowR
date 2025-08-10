@@ -71,7 +71,7 @@ The package provides a streamlined setup for building the workflow in R. The pac
 4.	\textbf{Workflow Generator:} Generates an R script with the complete workflow. This ensures correct layout and the ability to integrate the necessary code to obtain a workflow suitable for submission to NDRS and execution on the CAS database. 
 
 # Limitations 
-The Simulacrum Version: The newest version of the Simulacrum is required for implementing the workflow on the CAS database because it resembles the CAS database more closely than earlier versions. Thus, the functionalities of this package are built for the Simulacrum v2.1.0, which means that some functions will not support earlier versions of the Simulacrum.
+The Simulacrum Version: The newest version of the Simulacrum (v2.1.0) is required for implementing the workflow on the CAS database because it resembles the CAS database more closely than earlier versions. Thus, the functionalities of this package are built for the Simulacrum v2.1.0, which means that some functions will not support earlier versions of the Simulacrum.
 
 Data Differences:
 
@@ -83,7 +83,7 @@ The Simulacrum, being a snapshot of a limited period and a simplified structure,
 
 SQLite: While both Oracle and SQLite use SQL syntax, there are notable differences between their syntaxes. For example, SQLite uses ‘LIMIT’ while Oracle uses ‘ROWNUM’.  The sqldf package's implementation also restricts table creation capabilities within SQLite. Adjustment by NDRS is likely before execution on CAS. 
 
-Time Management: While the Simulacrum facilitates SQL query testing, code adjustments will still take time that is unaccounted for in the estimates provided by simulacrumWorkflowR. Despite this limitation, the package remains useful for benchmarking other components of the R script and identifying performance bottlenecks.
+Time Management: While the Simulacrum facilitates SQL query testing, the manual code adjustments required by NDRS are an additional time factor that is unaccounted for in the estimates provided by simulacrumWorkflowR. Despite this limitation, the package remains useful for benchmarking other components of the R script and identifying performance bottlenecks.
 
 
 # Acknowledgements
