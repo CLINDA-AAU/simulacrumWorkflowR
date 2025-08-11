@@ -32,7 +32,7 @@ dependencies = TRUE, force = TRUE)
 # Overview
 The main functions of simulacrumWorkflowR is: 
 
-- Integrated SQL Environment: Leverages the SQLdf (Grothendieck, 2017) package to enable SQL queries directly within R, eliminating the need for external database setup and ODBC connections by creating a local SQLite temporary database within the R environment.  
+- Integrated SQL Environment: Leverages the sqldf (Grothendieck, 2017) package to enable SQL queries directly within R, eliminating the need for external database setup and ODBC connections by creating a local SQLite temporary database within the R environment.  
 
 - Query Helper: Offers a collection of queries custom-made for the Simulacrum, for pulling and merging certain tables. Additionally, does the sqlite2oracle function assist in translating queries to be compatible with the NHS servers. 
 
@@ -61,7 +61,7 @@ Or at the link: https://simulacrum.healthdatainsight.org.uk/using-the-simulacrum
 6) Send the Workflow to NHS and wait for the results
 
 # Explanation of the workflow
-The workflow is built around the SQLdf package where the user are able to setup a invisible database in the span of seconds and fully automated. Before the database is intialised, the user is required to download the latest version of the Simulacrum (v2.1.0) data: https://simulacrum.healthdatainsight.org.uk/using-the-simulacrum/requesting-data/ .
+The workflow is built around the sqldf package where the user are able to setup a invisible database in the span of seconds and fully automated. Before the database is intialised, the user is required to download the latest version of the Simulacrum (v2.1.0) data: https://simulacrum.healthdatainsight.org.uk/using-the-simulacrum/requesting-data/ .
 
 The latest Simulacrum data is formatted identically to the real CAS data. Once downloaded, the read_simulacrum() function can automatically load the CSV files as data frames in R:
 
@@ -144,7 +144,7 @@ In the event of an error on NHS servers while executing the analysis pipeline, t
 
 # References
 
-- Grothendieck G, (2017). Sqldf: Manipulate R Data Frames Using SQL. Link:  ggrothendieck/sqldf: Perform SQL      
+- Grothendieck G, (2017). sqldf: Manipulate R Data Frames Using SQL. Link:  ggrothendieck/sqldf: Perform SQL      
   Selects on R Data Frames 
 
 - Frayling L, Jose S. (2023) Simulacrum v2 User Guide. Health Data Insight. Link: Simulacrum-v2-User-Guide.pdf 

@@ -65,7 +65,7 @@ The simulacrumWorkflowR package is, to our knowledge, the first package designed
 # Key functionalities 
 The package provides a streamlined setup for building the workflow in R. The package includes:
 
-1.	\textbf{Integrated SQL Environment:} Leverages the SQLdf [@grothendieck2017sqldf] package to enable SQL queries directly within R, eliminating the need to set up an external database and ODBC connections by creating a local temporary SQLite database [@sqlite2025main] within the R environment. 
+1.	\textbf{Integrated SQL Environment:} Leverages the sqldf [@grothendieck2017sqldf] package to enable SQL queries directly within R, eliminating the need to set up an external database and ODBC connections by creating a local temporary SQLite database [@sqlite2025main] within the R environment. 
 2.	\textbf{Query Helper:} Offers a collection of queries custom-made for the Simulacrum dataset  for pulling and merging specific tables. Additionally, the `sqlite2oracle` function assists in translating queries to be compatible with the CAS database servers.
 3.	\textbf{Helper Tools:} Offers a range of data preprocessing functions for cleaning and preparing the data for analysis, ensuring data quality, and consistency. Key functions include cancer type grouping, survival outcomes, and logging reports. 
 4.	\textbf{Workflow Generator:} Generates an R script with the complete workflow. This ensures correct layout and the ability to integrate the necessary code to obtain a workflow suitable for submission to NDRS and execution on the CAS database. 
