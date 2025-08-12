@@ -3,6 +3,8 @@
 
 # simulacrumWorkflowR
 
+[![status](https://joss.theoj.org/papers/10.21105/joss.08120/status.svg)](https://doi.org/10.21105/joss.08120)
+
 simulacrumWorkflowR is a package developed to assist users of the
 Simulacrum dataset in better preparing to use the dataset as a precursor
 to accessing real patient data in the Cancer Administration System
@@ -31,7 +33,7 @@ dependencies = TRUE, force = TRUE)
 
 The main functions of simulacrumWorkflowR is:
 
-- Integrated SQL Environment: Leverages the SQLdf (Grothendieck, 2017)
+- Integrated SQL Environment: Leverages the sqldf (Grothendieck, 2017)
   package to enable SQL queries directly within R, eliminating the need
   for external database setup and ODBC connections by creating a local
   SQLite temporary database within the R environment.
@@ -82,7 +84,7 @@ Or at the link:
 
 # Explanation of the workflow
 
-The workflow is built around the SQLdf package where the user are able
+The workflow is built around the sqldf package where the user are able
 to setup a invisible database in the span of seconds and fully
 automated. Before the database is intialised, the user is required to
 download the latest version of the Simulacrum (v2.1.0) data:
@@ -94,7 +96,7 @@ data. Once downloaded, the read_simulacrum() function can automatically
 load the CSV files as data frames in R:
 
 ``` r
-dir <- "C:/Users/p90j/Documents/simulacrum_v2.1.0/Data"
+dir <- system.file("extdata", "minisimulacrum", package = "simulacrumWorkflowR")
 # Automated data loading 
 data_frames_lists <- read_simulacrum(dir, selected_files = c("sim_av_patient", "sim_av_tumour")) 
 #> Reading: sim_av_patient
@@ -127,6 +129,10 @@ Execute queries with the sql_test() function:
 
 ``` r
 query_result <- query_sql(query)
+#> Warning in query_sql(query): To maintain consistency with create_workflow(),
+#> consider assigning the output of query_sql() to a variable named
+#> 'query_result'. This aligns with the example workflow and streamlines the
+#> workflow.
 ```
 
 ## SQLite to Oracle Query Translation
@@ -180,7 +186,7 @@ create_workflow(
                          analysis = "model = glm(AGE ~ STAGE_BEST + GRADE,  data=modified_data)",
                          model_results = "html_table_model(model)")
 #> Created path ./Outputs
-#> Workflow script created at: ./Outputs/workflow_20250523_1528.R
+#> Workflow script created at: ./Outputs/workflow_20250812_1052.R
 #> The workflow script is designed for execution on National Health Service (NHS). Local execution of this script is likely to fail due to its dependency on a database connection. The goal of this package is to generate a workflow file compatible with the NHS server environment, which eliminates the need for local database configuration. Assuming successful execution of all local operations, including library imports, data queries, data management procedures, analyses, and file saving, the generated workflow is expected to function correctly within the NHS server environment.
 ```
 
@@ -193,7 +199,7 @@ generate a comprehensive log to facilitate seamless debugging.
 
 # References
 
-- Grothendieck G, (2017). Sqldf: Manipulate R Data Frames Using SQL.
+- Grothendieck G, (2017). sqldf: Manipulate R Data Frames Using SQL.
   Link: ggrothendieck/sqldf: Perform SQL  
   Selects on R Data Frames
 
